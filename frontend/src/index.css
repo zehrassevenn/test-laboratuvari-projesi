@@ -1,0 +1,24 @@
+/* src/index.css */
+
+/* Tailwind'in temel stillerini yüklüyoruz */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Senin HTML içindeki <style> etiketine yazdığın özel stillerini buraya taşıdık */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8f9fa;
+}
+.calendar-grid {
+  grid-template-columns: 80px repeat(7, minmax(0, 1fr));
+}
+.time-slot {
+  height: 60px;
+}
+.booked-slot {
+  transition: all 0.2s ease-in-out;
+}
+.booked-slot:hover .hover-content {
+  opacity: 1;
+}
