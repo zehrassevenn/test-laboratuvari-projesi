@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Settings" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="Menu_Dashboard" xml:space="preserve">
+    <value>Kontrollzentrum</value>
+  </data>
+  <data name="Menu_Equipments" xml:space="preserve">
+    <value>Ausrüstung</value>
+  </data>
+  <data name="Menu_Reservations" xml:space="preserve">
+    <value>Meine Reservierungen</value>
+  </data>
+  <data name="Menu_Management" xml:space="preserve">
+    <value>Verwaltung</value>
+  </data>
+  <data name="Menu_Reports" xml:space="preserve">
+    <value>Berichte</value>
+  </data>
+</root>

@@ -1,0 +1,59 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using backend
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = null; /* Kendi HTML iskeletin olduğu için Layout'u iptal ettik */
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Laboratuvar Sistemi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+    <div class="container mt-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3>@SharedLocalizer["Settings"]</h3>
+            </div>
+            <div class="card-body">
+                
+                <p>Mevcut Dil: <strong>@System.Globalization.CultureInfo.CurrentCulture.DisplayName</strong></p>
+
+                <form asp-controller="Home" asp-action="ChangeLanguage" method="post">
+                    <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+
+                    <div class="form-group">
+                        <label>@SharedLocalizer["Language"]:</label>
+                        
+                        <select name="culture" onchange="this.form.submit()" class="form-control" style="width: 200px;">
+                            
+                            @if (System.Globalization.CultureInfo.CurrentCulture.Name == "tr-TR")
+                            { <option value="tr-TR" selected>🇹🇷 Türkçe</option> }
+                            else { <option value="tr-TR">🇹🇷 Türkçe</option> }
+
+                            @if (System.Globalization.CultureInfo.CurrentCulture.Name == "en-US")
+                            { <option value="en-US" selected>🇬🇧 English</option> }
+                            else { <option value="en-US">🇬🇧 English</option> }
+
+                            @if (System.Globalization.CultureInfo.CurrentCulture.Name == "de-DE")
+                            { <option value="de-DE" selected>🇩🇪 Deutsch</option> }
+                            else { <option value="de-DE">🇩🇪 Deutsch</option> }
+
+                        </select>
+                    </div>
+                </form>
+
+                <hr />
+                <button class="btn btn-success">@SharedLocalizer["Save"]</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

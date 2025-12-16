@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Menu_Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="Menu_Equipments" xml:space="preserve">
+    <value>Equipments</value>
+  </data>
+  <data name="Menu_Reservations" xml:space="preserve">
+    <value>My Reservations</value>
+  </data>
+  <data name="Menu_Management" xml:space="preserve">
+    <value>Management</value>
+  </data>
+  <data name="Menu_Reports" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+</root>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Settings" xml:space="preserve">
+    <value>Ayarlar</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Dil Seçimi</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Kaydet</value>
+  </data>
+  <data name="Menu_Dashboard" xml:space="preserve">
+    <value>Kontrol Paneli</value>
+  </data>
+  <data name="Menu_Equipments" xml:space="preserve">
+    <value>Ekipmanlar</value>
+  </data>
+  <data name="Menu_Reservations" xml:space="preserve">
+    <value>Rezervasyonlarım</value>
+  </data>
+  <data name="Menu_Management" xml:space="preserve">
+    <value>Yönetim</value>
+  </data>
+  <data name="Menu_Reports" xml:space="preserve">
+    <value>Raporlar</value>
+  </data>
+</root>

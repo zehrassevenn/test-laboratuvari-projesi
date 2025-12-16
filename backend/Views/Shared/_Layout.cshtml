@@ -1,0 +1,14 @@
+@using backend
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+<li class="nav-item">
+    <a class="nav-link" href="/Home/Index">
+        <i class="icon-grid menu-icon"></i>
+        <span class="menu-title">@SharedLocalizer["Menu_Dashboard"]</span> 
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/Ekipman/Index">
+        <span class="menu-title">@SharedLocalizer["Menu_Equipments"]</span>
+    </a>
+</li>
