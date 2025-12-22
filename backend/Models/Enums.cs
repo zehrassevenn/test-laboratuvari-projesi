@@ -1,4 +1,4 @@
-namespace backend.Models // namespace'inizin doğru olduğundan emin olun
+namespace backend.Models
 {
     public enum EkipmanDurumu
     {

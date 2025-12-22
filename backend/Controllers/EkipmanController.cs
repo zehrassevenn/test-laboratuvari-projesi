@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc; //api ve controller özellikleri için
 using backend.Models; //veritabanı tablolarını tanımak için
 using backend.Services; //servisi tanımak için
@@ -89,6 +90,26 @@ namespace backend.Controllers
         {
             await _ekipmanService.UpdateEkipmanDurumAsync(id, yeniDurum);
             return Ok(new { mesaj = "Durum güncellendi" });
+        }
+        // Cihaz Bilgilerini Güncelle (Tam Güncelleme)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateEkipman(int id, [FromBody] Ekipman ekipman)
+        {
+            if (id != ekipman.EkipmanID)
+            {
+                return BadRequest("ID uyuşmazlığı.");
+            }
+
+            try
+            {
+                await _ekipmanService.UpdateEkipmanAsync(ekipman);
+            }
+            catch (Exception)
+            {
+                return NotFound("Cihaz bulunamadı veya hata oluştu.");
+            }
+
+            return NoContent(); // 204 Başarılı
         }
     }
 }

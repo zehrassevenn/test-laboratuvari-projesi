@@ -2,28 +2,29 @@ import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next'; // EKLENDİ
 import { Navigate, Route, BrowserRouter as Router, Routes, useNavigate } from 'react-router-dom';
 // İkonları 'lucide-react' paketinden tek tek import ediyoruz
 import { CalendarCheck, Cpu, Edit, FileText, Info, LayoutDashboard, LogOut, Shield } from 'lucide-react';
 
+import AdminPanel from './components/AdminPanel';
 import EkipmanDetay from './components/EkipmanDetay';
 import EkipmanEdit from './components/EkipmanEdit';
-import EkipmanEkle from './components/EkipmanEkle';
-import LabEkle from './components/LabEkle';
 import Raporlar from './components/Raporlar';
 import Register from './components/Register';
 import ReservationModal from './components/ReservationModal';
+import Rezervasyonlar from './components/Rezervasyonlar';
 
 const API_URL = "http://localhost:5000/api";
 
 //İkonları kolay kullanmak için bir obje
 const icons = {
-LayoutDashboard,
-Cpu,
-CalendarCheck,
-Shield,
-LogOut,
-FileText
+    LayoutDashboard,
+    Cpu,
+    CalendarCheck,
+    Shield,
+    LogOut,
+    FileText
 };
 
 // LOGIN PAGE
@@ -100,12 +101,14 @@ const LoginPage = ({ onLogin }) => {
 // --- DİĞER BİLEŞENLER ---
 // side bar
 const Sidebar = ({ user, activePage, onNavigate }) => {
+    const { t } = useTranslation(); // EKLENDİ
+
     const navItems = [
-        { name: 'Kontrol Paneli', icon: 'LayoutDashboard', page: 'dashboard', roles: ['Test Mühendisi', 'Laboratuvar Yöneticisi'] },
-        { name: 'Ekipmanlar', icon: 'Cpu', page: 'equipment', roles: ['Test Mühendisi', 'Laboratuvar Yöneticisi'] },
-        { name: 'Rezervasyonlarım', icon: 'CalendarCheck', page: 'my-reservations', roles: ['Test Mühendisi', 'Laboratuvar Yöneticisi'] },
-        { name: 'Yönetim', icon: 'Shield', page: 'admin', roles: ['Laboratuvar Yöneticisi'] },
-        { name: 'Raporlar', icon: 'FileText', page: 'reports', roles: ['Test Mühendisi', 'Laboratuvar Yöneticisi'] }
+        { name: t('Dashboard'), icon: 'LayoutDashboard', page: 'dashboard', roles: ['Test Mühendisi', 'Laboratuvar Yöneticisi'] },
+        { name: t('Equipments'), icon: 'Cpu', page: 'equipment', roles: ['Test Mühendisi', 'Laboratuvar Yöneticisi'] },
+        { name: t('MyReservations'), icon: 'CalendarCheck', page: 'my-reservations', roles: ['Test Mühendisi', 'Laboratuvar Yöneticisi'] },
+        { name: t('Management'), icon: 'Shield', page: 'admin', roles: ['Laboratuvar Yöneticisi'] },
+        { name: t('Reports'), icon: 'FileText', page: 'reports', roles: ['Test Mühendisi', 'Laboratuvar Yöneticisi'] }
     ];
 
     const Icon = ({ name }) => { const LucideIcon = icons[name]; return LucideIcon ? <LucideIcon className="h-5 w-5 mr-3" /> : null; };
@@ -118,8 +121,7 @@ const Sidebar = ({ user, activePage, onNavigate }) => {
             <nav className="flex-grow p-4">
                 <ul>
                     {navItems.filter(item => item.roles.includes(user.role)).map(item => (
-                        <li key={item.name}>
-                            {/* DÜZELTME: <a> etiketi yerine <button> kullandık */}
+                        <li key={item.page}> {/* Key olarak page kullandım çünkü name çevrildiği için değişebilir */}
                             <button
                                 onClick={() => onNavigate(item.page)}
                                 className={`w-full text-left flex items-center px-4 py-2.5 my-1 rounded-lg transition-colors duration-200 ${
@@ -140,12 +142,54 @@ const Sidebar = ({ user, activePage, onNavigate }) => {
 };
 
 const Header = ({ user, onLogout }) => {
+    const { t, i18n } = useTranslation(); // EKLENDİ
+
+    const changeLanguage = (lang) => {
+        i18n.changeLanguage(lang);
+    };
+
     const Icon = ({ name, className }) => { const LucideIcon = icons[name]; return LucideIcon ? <LucideIcon className={className} /> : null; };
-    return (<header className="h-16 bg-white border-b border-gray-200 flex items-center justify-end px-6"><div className="flex items-center"><div className="text-right mr-4"><p className="font-semibold text-gray-800">{user.fullName}</p><p className="text-xs text-gray-500">{user.role}</p></div><button onClick={onLogout} className="p-2 rounded-full hover:bg-gray-100 transition"><Icon name="LogOut" className="w-5 h-5 text-gray-600" /></button></div></header>);
+    
+    return (
+        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
+             {/* --- DİL BUTONLARI EKLENDİ --- */}
+            <div className="flex space-x-2">
+                <button
+                    onClick={() => changeLanguage('tr')}
+                    className={`px-2 py-1 rounded text-xs font-bold transition-colors ${i18n.language === 'tr' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                >
+                    TR 🇹🇷
+                </button>
+                <button
+                    onClick={() => changeLanguage('en')}
+                    className={`px-2 py-1 rounded text-xs font-bold transition-colors ${i18n.language === 'en' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                >
+                    EN 🇬🇧
+                </button>
+                <button
+                    onClick={() => changeLanguage('de')}
+                    className={`px-2 py-1 rounded text-xs font-bold transition-colors ${i18n.language === 'de' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                >
+                    DE 🇩🇪
+                </button>
+            </div>
+
+            <div className="flex items-center">
+                <div className="text-right mr-4">
+                    <p className="font-semibold text-gray-800">{user.fullName}</p>
+                    <p className="text-xs text-gray-500">{user.role}</p>
+                </div>
+                <button onClick={onLogout} className="p-2 rounded-full hover:bg-gray-100 transition" title={t('LogOut')}>
+                    <Icon name="LogOut" className="w-5 h-5 text-gray-600" />
+                </button>
+            </div>
+        </header>
+    );
 };
 
 const ReservationCalendar = () => {
     const [events, setEvents] = useState([]);
+    const { t, i18n } = useTranslation();
 
     // Sayfa açılınca rezervasyonları çek
     useEffect(() => {
@@ -157,24 +201,30 @@ const ReservationCalendar = () => {
             const response = await axios.get(`${API_URL}/reservations`);
             
             // Backend verisini Takvim formatına çeviriyoruz
-            const formattedEvents = response.data.map(res => {
-                // Renk seçimi (Ekipman ID'sine göre renk atıyoruz)
-                
-                // Tailwind sınıfını Hex koduna çevirmek zor olduğu için
-                // Şimdilik sabit mavi tonlarında gösterelim veya basit bir mapping yapalım.
-                // FullCalendar doğrudan CSS class kabul etmez, hex ister.
-                // Basitlik adına sabit renk veriyoruz veya dinamik hex üretebiliriz:
-                
-                return {
-                    id: res.rezervasyonID.toString(),
-                    // Başlık: Cihaz Adı (Kullanıcı Adı)
-                    title: `${res.ekipman?.ekipmanAdi || 'Bilinmeyen Cihaz'} (${res.kullanici?.ad} ${res.kullanici?.soyad})`, 
-                    start: new Date(res.baslangicTarihi),
-                    end: new Date(res.bitisTarihi),
-                    backgroundColor: '#3b82f6', // Mavi
-                    borderColor: '#2563eb'
-                };
-            });
+            const formattedEvents = response.data
+                // 1. ADIM: Reddedilenleri (Durum = 2) filtrele (Gösterme)
+                .filter(res => res.durum !== 2)
+                .map(res => {
+                    // 2. ADIM: Duruma göre renk belirle
+                    let bgColor = '#3b82f6'; // Varsayılan Mavi (Onaylı - Durum 1)
+                    let bdColor = '#2563eb';
+
+                    // Eğer Onay Bekliyorsa (Durum 0) -> Sarı/Turuncu yap
+                    if (res.durum === 0) {
+                        bgColor = '#f59e0b'; // Kehribar (Amber)
+                        bdColor = '#d97706';
+                    }
+
+                    return {
+                        id: res.rezervasyonID.toString(),
+                        // Başlık: Cihaz Adı (Kullanıcı Adı)
+                        title: `${res.ekipman?.ekipmanAdi || t('Unknown')} (${res.kullanici?.ad} ${res.kullanici?.soyad})`, 
+                        start: new Date(res.baslangicTarihi),
+                        end: new Date(res.bitisTarihi),
+                        backgroundColor: bgColor, 
+                        borderColor: bdColor
+                    };
+                });
 
             setEvents(formattedEvents);
         } catch (error) {
@@ -185,20 +235,35 @@ const ReservationCalendar = () => {
     return (
         <div className="bg-white p-6 rounded-lg shadow">
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold text-gray-800">Haftalık Rezervasyon Takvimi</h2>
-                <button 
-                    onClick={fetchReservations} 
-                    className="text-sm text-blue-600 hover:underline"
-                >
-                    Yenile ⟳
-                </button>
+                <h2 className="text-xl font-bold text-gray-800">{t('WeeklyCalendar')}</h2>
+                
+                <div className="flex items-center gap-4">
+                    {/* Renk Açıklamaları (Legend) */}
+                    <div className="flex gap-3 text-xs">
+                        <div className="flex items-center">
+                            <span className="w-3 h-3 bg-blue-500 rounded-full mr-1"></span>
+                            {t('Approved')}
+                        </div>
+                        <div className="flex items-center">
+                            <span className="w-3 h-3 bg-amber-500 rounded-full mr-1"></span>
+                            {t('Pending')}
+                        </div>
+                    </div>
+
+                    <button
+                        onClick={fetchReservations}
+                        className="text-sm text-blue-600 hover:underline ml-2"
+                    >
+                        {t('Refresh')} ⟳
+                    </button>
+                </div>
             </div>
             
             <FullCalendar
                 plugins={[timeGridPlugin]}
                 initialView="timeGridWeek"
-                events={events} // Artık veritabanından gelen olayları kullanıyoruz
-                locale='tr'
+                events={events} 
+                locale={i18n.language} 
                 headerToolbar={{
                     left: 'prev,next today',
                     center: 'title',
@@ -212,10 +277,10 @@ const ReservationCalendar = () => {
                 
                 eventClick={(info) => {
                     alert(
-                        `📌 Rezervasyon Detayı\n\n` +
-                        `Cihaz/Kişi: ${info.event.title}\n` +
-                        `Başlangıç: ${info.event.start.toLocaleString('tr-TR')}\n` +
-                        `Bitiş: ${info.event.end.toLocaleString('tr-TR')}`
+                        `📌 ${t('Info')}\n\n` +
+                        `${info.event.title}\n` +
+                        `${t('Start')}: ${info.event.start.toLocaleString(i18n.language === 'tr' ? 'tr-TR' : 'en-US')}\n` +
+                        `${t('End')}: ${info.event.end.toLocaleString(i18n.language === 'tr' ? 'tr-TR' : 'en-US')}`
                     );
                 }}
             />
@@ -224,6 +289,7 @@ const ReservationCalendar = () => {
 };
 
 const EquipmentList = ({ user }) => {
+    const { t } = useTranslation(); // EKLENDİ
     const [ekipmanlar, setEkipmanlar] = useState([]);
     const [lablar, setLablar] = useState([]);
     const [selectedLabID, setSelectedLabID] = useState('');
@@ -300,7 +366,7 @@ const EquipmentList = ({ user }) => {
             setEkipmanlar(prev => prev.map(item =>
                 item.ekipmanID === ekipmanId ? { ...item, durum: parseInt(yeniDurum) } : item
             ));
-            alert("Durum güncellendi!");
+            alert(t('Save') + "!");
         } catch (error) {
             console.error("Durum güncellenemedi:", error);
             alert("Hata oluştu.");
@@ -309,11 +375,11 @@ const EquipmentList = ({ user }) => {
 
     const getStatusBadge = (durum) => {
         switch(durum) {
-            case 0: return <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Müsait</span>;
-            case 1: return <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Kullanımda</span>;
-            case 2: return <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Bakımda</span>;
-            case 3: return <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Arızalı</span>;
-            default: return <span className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Bilinmiyor</span>;
+            case 0: return <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">{t('Available')}</span>;
+            case 1: return <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">{t('InUse')}</span>;
+            case 2: return <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full">{t('Maintenance')}</span>;
+            case 3: return <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">{t('Broken')}</span>;
+            default: return <span className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded-full">{t('Unknown')}</span>;
         }
     };
 
@@ -324,18 +390,18 @@ const EquipmentList = ({ user }) => {
             
             <div className="flex justify-between items-end mb-6 border-b pb-4">
                 <div>
-                    <h2 className="text-xl font-bold text-gray-800">Laboratuvar Cihazları</h2>
-                    <p className="text-sm text-gray-500 mt-1">Cihaz özelliklerini görmek için <Info className="inline w-4 h-4 text-blue-600"/> ikonuna tıklayınız.</p>
+                    <h2 className="text-xl font-bold text-gray-800">{t('LabDevices')}</h2>
+                    <p className="text-sm text-gray-500 mt-1">{t('ClickInfo')}</p>
                 </div>
                 
                 <div className="w-1/3">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Laboratuvar Seç:</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('SelectLab')}</label>
                     <select
                         className="w-full p-2 border rounded bg-gray-50 focus:ring-2 focus:ring-blue-500"
                         value={selectedLabID}
                         onChange={handleLabChange}
                     >
-                        <option value="">Tüm Laboratuvarlar</option>
+                        <option value="">{t('AllLabs')}</option>
                         {lablar.map(lab => (
                             <option key={lab.labID} value={lab.labID}>{lab.labAdi}</option>
                         ))}
@@ -345,25 +411,25 @@ const EquipmentList = ({ user }) => {
 
             {yukleniyor ? (
                 <div className="text-center py-10">
-                    <p className="text-gray-500 mt-2">Cihazlar yükleniyor...</p>
+                    <p className="text-gray-500 mt-2">{t('Loading')}</p>
                 </div>
             ) : (
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm text-left text-gray-500">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
-                                <th className="px-6 py-3">Cihaz Adı</th>
-                                <th className="px-6 py-3">Laboratuvar</th>
-                                <th className="px-6 py-3">Konum</th>
-                                <th className="px-6 py-3">Durum</th>
-                                <th className="px-6 py-3">İşlem</th>
+                                <th className="px-6 py-3">{t('DeviceName')}</th>
+                                <th className="px-6 py-3">{t('Laboratory')}</th>
+                                <th className="px-6 py-3">{t('Location')}</th>
+                                <th className="px-6 py-3">{t('Status')}</th>
+                                <th className="px-6 py-3">{t('Operations')}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {ekipmanlar.length === 0 ? (
                                 <tr>
                                     <td colSpan="5" className="text-center py-8 text-gray-500 bg-gray-50 rounded-lg">
-                                        Cihaz bulunamadı.
+                                        {t('NoDeviceFound')}
                                     </td>
                                 </tr>
                             ) : (
@@ -375,7 +441,7 @@ const EquipmentList = ({ user }) => {
                                             <button
                                                 onClick={() => handleInfoClick(item)} //bilgi butonu
                                                 className="text-blue-500 hover:text-blue-700 hover:bg-blue-50 p-1 rounded-full transition"
-                                                title="Detaylı Bilgi"
+                                                title={t('Info')}
                                             >
                                                 <Info size={18} />
                                             </button>
@@ -383,7 +449,7 @@ const EquipmentList = ({ user }) => {
                                                 <button
                                                     onClick={() => handleEditClick(item)} //düzenleme butonu
                                                     className="text-orange-500 hover:text-orange-700 hover:bg-orange-50 p-1 rounded-full transition"
-                                                    title="Düzenle"
+                                                    title={t('Edit')}
                                                 >
                                                     <Edit size={18} />
                                                 </button>
@@ -401,10 +467,10 @@ const EquipmentList = ({ user }) => {
                                                     onChange={(e) => handleStatusUpdate(item.ekipmanID, e.target.value)}
                                                     className="p-1 border rounded text-xs bg-gray-50 focus:ring-blue-500"
                                                 >
-                                                    <option value="0">Müsait 🟢</option>
-                                                    <option value="1">Kullanımda 🔵</option>
-                                                    <option value="2">Bakımda 🟡</option>
-                                                    <option value="3">Arızalı 🔴</option>
+                                                    <option value="0">{t('Available')} 🟢</option>
+                                                    <option value="1">{t('InUse')} 🔵</option>
+                                                    <option value="2">{t('Maintenance')} 🟡</option>
+                                                    <option value="3">{t('Broken')} 🔴</option>
                                                 </select>
                                             ) : (
                                                 getStatusBadge(item.durum)
@@ -417,11 +483,11 @@ const EquipmentList = ({ user }) => {
                                                     onClick={() => handleRezerveEtClick(item)}
                                                     className="bg-blue-600 text-white px-3 py-1.5 rounded hover:bg-blue-700 text-xs font-bold transition"
                                                 >
-                                                    Rezerve Et
+                                                    {t('Reserve')}
                                                 </button>
                                             ) : (
                                                 <span className="text-red-500 text-xs font-bold border border-red-200 bg-red-50 px-2 py-1 rounded">
-                                                    ⛔ Rezerve Edilemez
+                                                    {t('NotReservable')}
                                                 </span>
                                             )}
                                         </td>
@@ -440,7 +506,7 @@ const EquipmentList = ({ user }) => {
                     onClose={() => setIsReservationModalOpen(false)}
                     equipment={selectedReservationEquipment}
                     user={user}
-                    onSuccess={() => alert("Rezervasyon Başarılı!")}
+                    onSuccess={() => alert(t('Save') + "!")}
                 />
             )}
 
@@ -467,263 +533,39 @@ const EquipmentList = ({ user }) => {
     );
 };
 
-const MyReservations = ({ user }) => {
-    const [myReservations, setMyReservations] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    // Sayfa açılınca rezervasyonları çek
-    useEffect(() => {
-        const fetchMyData = async () => {
-            try {
-                // Tüm rezervasyonları çekiyoruz
-                const response = await axios.get(`${API_URL}/reservations`);
-                
-                // Backend'den gelen verileri kontrol et
-                // Cihaz ve Kullanıcı bilgilerinin dolu gelmesi lazım (Backend'de Include yapmıştık)
-                
-                // Sadece giriş yapan kullanıcıya (user.id) ait olanları filtreliyoruz
-                // Not: Backend'den gelen veri genellikle camelCase (kullaniciID) olur ama 
-                // bazen PascalCase (KullaniciID) olabilir. Filtrelemede dikkat et.
-                const usersData = response.data.filter(r => r.kullaniciID === user.id);
-                
-                setMyReservations(usersData);
-                setLoading(false);
-            } catch (error) {
-                console.error("Rezervasyonlar alınamadı:", error);
-                setLoading(false);
-            }
-        };
-
-        if (user) {
-            fetchMyData();
-        }
-    }, [user]);
-
-    // İptal Etme Fonksiyonu
-    const handleCancel = async (id) => {
-        if (!window.confirm("Bu rezervasyonu iptal etmek istediğinize emin misiniz?")) return;
-
-        try {
-            await axios.delete(`${API_URL}/reservations/${id}`);
-            // Listeden de siliyoruz ki sayfa yenilenmeden kaybolsun
-            setMyReservations(prev => prev.filter(item => item.rezervasyonID !== id));
-        } catch (error) {
-            alert("İptal işlemi başarısız oldu.");
-        }
-    };
-
-    return (
-        <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Rezervasyonlarım</h2>
-            
-            {loading ? (
-                <p className="text-gray-500 text-center py-4">Yükleniyor...</p>
-            ) : (
-                <div className="overflow-x-auto">
-                    <table className="w-full text-sm text-left text-gray-500">
-                        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                            <tr>
-                                <th scope="col" className="px-6 py-3">Ekipman</th>
-                                <th scope="col" className="px-6 py-3">Başlangıç</th>
-                                <th scope="col" className="px-6 py-3">Bitiş</th>
-                                <th scope="col" className="px-6 py-3">Durum</th>
-                                <th scope="col" className="px-6 py-3">İşlem</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {myReservations.length > 0 ? (
-                                myReservations.map(res => (
-                                    <tr key={res.rezervasyonID} className="bg-white border-b hover:bg-gray-50">
-                                        <td className="px-6 py-4 font-medium text-gray-900">
-                                            {/* Null check yapıyoruz: ekipman silinmiş olabilir */}
-                                            {res.ekipman ? res.ekipman.ekipmanAdi : 'Bilinmeyen Cihaz'}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            {new Date(res.baslangicTarihi).toLocaleString('tr-TR')}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            {new Date(res.bitisTarihi).toLocaleString('tr-TR')}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                                                Onaylandı
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <button
-                                                onClick={() => handleCancel(res.rezervasyonID)}
-                                                className="text-red-600 hover:text-red-800 font-medium"
-                                            >
-                                                İptal Et
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="5" className="text-center py-10 text-gray-500">
-                                        Yaklaşan bir rezervasyonunuz bulunmamaktadır.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-            )}
-        </div>
-    );
-};
-
-//Yönetici Paneli
-const AdminPanel = ({user}) => {
-    const [bekleyenler, setBekleyenler] = useState([]);
-    const [mesaj, setMesaj] = useState('');
-    const [aktifSekme, setAktifSekme] = useState('kullanicilar'); // 'kullanicilar', 'lab', 'ekipman'
-
-    useEffect(() => {
-        // Sadece 'kullanicilar' sekmesi açıksa veriyi çek
-        if (aktifSekme === 'kullanicilar') {
-            fetchBekleyenler();
-        }
-    }, [aktifSekme]);
-
-    const fetchBekleyenler = async () => {
-        try {
-            const response = await axios.get(`${API_URL}/auth/bekleyenler`);
-            console.log("Gelen Veri:", response.data); // Hata ayıklama için konsola yazdıralım
-            setBekleyenler(response.data);
-        } catch (error) {
-            console.error("Veri çekme hatası:", error);
-        }
-    };
-
-    const handleOnayla = async (id) => {
-        try {
-            await axios.post(`${API_URL}/auth/onayla/${id}`);
-            setMesaj('Kullanıcı onaylandı!');
-            fetchBekleyenler();
-            setTimeout(() => setMesaj(''), 3000);
-        } catch (error) {
-            alert("İşlem başarısız.");
-        }
-    };
-
-    const handleReddet = async (id) => {
-        if(!window.confirm("Silmek istediğine emin misin?")) return;
-        try {
-            await axios.delete(`${API_URL}/auth/reddet/${id}`);
-            setMesaj('Kullanıcı silindi.');
-            fetchBekleyenler();
-            setTimeout(() => setMesaj(''), 3000);
-        } catch (error) {
-            alert("İşlem başarısız.");
-        }
-    };
-
-    return (
-        <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                <Shield className="mr-2" /> Yönetim Paneli
-            </h2>
-            {/* --- YENİ EKLENEN KISIM: SEKME BUTONLARI --- */}
-            <div className="flex space-x-4 mb-6 border-b pb-2">
-                <button
-                    onClick={() => setAktifSekme('kullanicilar')}
-                    className={`px-4 py-2 font-medium rounded transition ${aktifSekme === 'kullanicilar' ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-50'}`}
-                >
-                    Kullanıcı Onayları
-                </button>
-                <button
-                    onClick={() => setAktifSekme('lab')}
-                    className={`px-4 py-2 font-medium rounded transition ${aktifSekme === 'lab' ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-50'}`}
-                >
-                    Laboratuvar Ekle
-                </button>
-                <button
-                    onClick={() => setAktifSekme('ekipman')}
-                    className={`px-4 py-2 font-medium rounded transition ${aktifSekme === 'ekipman' ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-50'}`}
-                >
-                    Cihaz Ekle
-                </button>
-            </div>
-
-            {mesaj && <div className="bg-blue-100 text-blue-700 p-3 rounded mb-4 text-sm font-semibold">{mesaj}</div>}
-
-            {aktifSekme === 'kullanicilar' && (
-                <div className="border rounded-lg overflow-hidden">
-                    <div className="bg-gray-50 px-4 py-3 border-b">
-                        <h3 className="font-semibold text-gray-700">Onay Bekleyen Kullanıcılar</h3>
-                    </div>
-                    
-                    {bekleyenler.length === 0 ? (
-                        <div className="p-6 text-center text-gray-500">Şu an onay bekleyen yeni kayıt yok.</div>
-                    ) : (
-                        <table className="w-full text-sm text-left">
-                            <thead className="bg-gray-50 text-gray-600 uppercase text-xs">
-                                <tr>
-                                    <th className="px-6 py-3">Kullanıcı Bilgisi</th>
-                                    <th className="px-6 py-3">E-Posta</th>
-                                    <th className="px-6 py-3 text-right">İşlemler</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {bekleyenler.map((kisi) => {
-                                    const rolAdi = kisi.kullaniciRolleri?.[0]?.rol?.rolAdi || 'Rol Yok';
-                                    return (
-                                        <tr key={kisi.kullaniciID} className="border-b hover:bg-gray-50">
-                                            <td className="px-6 py-4 font-medium text-gray-900">
-                                                <div className="flex flex-col">
-                                                    <span className="text-lg font-bold">{kisi.ad} {kisi.soyad}</span>
-                                                    <span className="text-xs text-blue-600 font-semibold mt-1 bg-blue-50 px-2 py-1 rounded w-fit">
-                                                        {rolAdi}
-                                                    </span>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 text-gray-600">{kisi.email}</td>
-                                            <td className="px-6 py-4 text-right space-x-2">
-                                                <button onClick={() => handleOnayla(kisi.kullaniciID)} className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-xs font-bold">Onayla ✓</button>
-                                                <button onClick={() => handleReddet(kisi.kullaniciID)} className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-xs font-bold">Reddet X</button>
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                    )}
-                </div>
-            )}
-
-            {/* 2. SEKME: LAB EKLEME FORMU */}
-            {aktifSekme === 'lab' && <LabEkle user={user} />}
-            
-            {/* 3. SEKME: CİHAZ EKLEME FORMU */}
-            {aktifSekme === 'ekipman' && <EkipmanEkle />}
-        </div>
-    );
-};
 // --- DASHBOARD LAYOUT (Ana Panel İskeleti) ---
 const DashboardLayout = ({ user, onLogout }) => {
     const [activePage, setActivePage] = useState('dashboard');
     
-    // ...
+    // 1. DİL STATE'İNİ EKLİYORUZ (Varsayılan: 'tr')
+    const [language, setLanguage] = useState('tr'); 
+
     const renderContent = () => {
         switch(activePage) {
             case 'dashboard': return <ReservationCalendar />;
             case 'equipment': return <EquipmentList user={user} />;
-            case 'my-reservations': return <MyReservations user={user} />;
+            case 'my-reservations': return <Rezervasyonlar user={user} />;
             case 'admin': return <AdminPanel user={user} />;
-            case 'reports': return <Raporlar user={user} />;
+            
+            // 2. RAPORLAR SAYFASINA DİL BİLGİSİNİ GÖNDERİYORUZ
+            case 'reports': return <Raporlar user={user} language={language} />;
+            
             default: return <ReservationCalendar />;
         }
     }
-// ...
-    
 
     return (
         <div className="flex h-screen bg-gray-100">
             <Sidebar user={user} activePage={activePage} onNavigate={setActivePage} />
             <div className="flex-1 flex flex-col">
-                <Header user={user} onLogout={onLogout} />
+                {/* 3. HEADER'A DİL DEĞİŞTİRME FONKSİYONUNU GÖNDERİYORUZ */}
+                <Header 
+                    user={user} 
+                    onLogout={onLogout} 
+                    onLanguageChange={setLanguage} // Butona basınca burası çalışacak
+                    currentLang={language}         // Seçili dili buton rengi için gönderiyoruz
+                />
+                
                 <main className="flex-1 p-6 overflow-y-auto">
                     {renderContent()}
                 </main>
@@ -731,7 +573,6 @@ const DashboardLayout = ({ user, onLogout }) => {
         </div>
     );
 }
-
 // --- ANA APP ---
 const App = () => {
     const [user, setUser] = useState(null);

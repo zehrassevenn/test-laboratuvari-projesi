@@ -10,7 +10,6 @@ C:\Users\Zehra\test-laboratuvari-yeni\backend\bin\Debug\net5.0\de\backend.resour
 C:\Users\Zehra\test-laboratuvari-yeni\backend\bin\Debug\net5.0\en\backend.resources.dll
 C:\Users\Zehra\test-laboratuvari-yeni\backend\bin\Debug\net5.0\tr\backend.resources.dll
 C:\Users\Zehra\test-laboratuvari-yeni\backend\bin\Debug\net5.0\backend.Views.dll
-C:\Users\Zehra\test-laboratuvari-yeni\backend\bin\Debug\net5.0\backend.Views.pdb
 C:\Users\Zehra\test-laboratuvari-yeni\backend\bin\Debug\net5.0\BCrypt.Net-Next.dll
 C:\Users\Zehra\test-laboratuvari-yeni\backend\bin\Debug\net5.0\Humanizer.dll
 C:\Users\Zehra\test-laboratuvari-yeni\backend\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.dll
@@ -36,8 +35,6 @@ C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\backend.AssemblyI
 C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\backend.csproj.CoreCompileInputs.cache
 C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\backend.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\backend.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\backend.RazorAssemblyInfo.cache
-C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\backend.RazorAssemblyInfo.cs
 C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\de\backend.resources.cs
 C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\de\backend.resources.dll
 C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\en\backend.resources.cs
@@ -46,18 +43,10 @@ C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\tr\backend.resour
 C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\tr\backend.resources.dll
 C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\scopedcss\bundle\backend.styles.css
 C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\staticwebassets\backend.StaticWebAssets.Manifest.cache
-C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\backend.TagHelpers.input.cache
-C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\backend.TagHelpers.output.cache
-C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\backend.RazorCoreGenerate.cache
-C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
-C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\Razor\Views\_ViewImports.cshtml.g.cs
 C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\backend.RazorTargetAssemblyInfo.cache
-C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\backend.RazorTargetAssemblyInfo.cs
-C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\backend.Views.pdb
 C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\backend.csproj.CopyComplete
 C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\backend.dll
 C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\refint\backend.dll
 C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\backend.pdb
 C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\backend.genruntimeconfig.cache
 C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\ref\backend.dll
-C:\Users\Zehra\test-laboratuvari-yeni\backend\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs

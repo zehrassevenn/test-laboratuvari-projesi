@@ -76,7 +76,6 @@ const EkipmanEkle = () => {
                         value={ekipmanData.ResimUrl}
                         onChange={(e) => setEkipmanData({...ekipmanData, ResimUrl: e.target.value})}
                     />
-                    
                 </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Cihaz Adı</label>

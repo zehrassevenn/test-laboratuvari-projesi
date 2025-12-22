@@ -40,13 +40,12 @@ namespace backend
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                 });
-            }); // <-- Bu parantez kapanışı eksikti, buraya aldım.
+            });
 
             // 3. Localization Servisleri (CORS bloğunun dışına çıkarıldı)
             services.AddLocalization(options => options.ResourcesPath = "Resources");
 
-            services.AddControllersWithViews()
-                    .AddViewLocalization()
+            services.AddControllers()
                     .AddDataAnnotationsLocalization(options =>
                     {
                         options.DataAnnotationLocalizerProvider = (type, factory) =>
@@ -87,17 +86,12 @@ namespace backend
             // ---------------------------------------------
 
             app.UseRouting();
-            
             app.UseCors("AllowAll");
-            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                // Hem API hem View'lar çalıştığı için MapControllerRoute kullanmak daha güvenlidir
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllers();
             });
         }
     }

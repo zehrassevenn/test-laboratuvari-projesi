@@ -14,7 +14,7 @@ namespace backend.Data
 
     // 2. DbSet'ler (Tablolar)
     // Veritabanında oluşturulmasını istediğimiz her tablo için
-    // bir DbSet özelliği ekleriz.
+    // bir DbSet özelliği ekleriz
 
     public DbSet<Kullanici> Kullanicilar { get; set; }
     public DbSet<Rol> Roller { get; set; }

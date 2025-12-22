@@ -14,25 +14,34 @@ const ReservationModal = ({ isOpen, onClose, equipment, user, onSuccess }) => {
         e.preventDefault();
         setMesaj('');
 
-        // Basit validasyon
-        if (new Date(baslangic) >= new Date(bitis)) {
+        const simdi = new Date();
+        const baslangicTarihi = new Date(baslangic);
+        const bitisTarihi = new Date(bitis);
+
+        // 1. KONTROL: Geçmişe rezervasyon yapılamaz
+        if (baslangicTarihi < simdi) {
+            setMesaj('Hata: Geçmiş bir tarihe rezervasyon yapamazsınız.');
+            return;
+        }
+
+        // 2. KONTROL: Bitiş tarihi başlangıçtan sonra olmalı
+        if (baslangicTarihi >= bitisTarihi) {
             setMesaj('Hata: Bitiş zamanı başlangıçtan sonra olmalı.');
             return;
         }
 
         const rezervasyonData = {
             EkipmanID: equipment.ekipmanID,
-            KullaniciID: user.id, // Giriş yapan kullanıcının ID'si
+            KullaniciID: user.id,
             BaslangicTarihi: baslangic,
             BitisTarihi: bitis,
-            Durum: 0 // 0: Onay Bekliyor veya 1: Onaylandı (Direkt onaylı yapalım şimdilik)
+            Durum: 0 
         };
 
         try {
             await axios.post(`${API_URL}/reservations`, rezervasyonData);
             setMesaj('Başarılı! Rezervasyon oluşturuldu.');
             
-            // 1 saniye sonra modalı kapat ve listeyi yenile
             setTimeout(() => {
                 onSuccess();
                 onClose();
@@ -43,7 +52,6 @@ const ReservationModal = ({ isOpen, onClose, equipment, user, onSuccess }) => {
 
         } catch (error) {
             console.error("Rezervasyon Hatası:", error);
-            // Backend'den gelen "Dolu" hatasını gösterelim
             const errorMsg = error.response?.data || 'Rezervasyon yapılamadı. Cihaz dolu olabilir.';
             setMesaj(typeof errorMsg === 'string' ? errorMsg : 'Hata oluştu.');
         }
@@ -68,7 +76,7 @@ const ReservationModal = ({ isOpen, onClose, equipment, user, onSuccess }) => {
                         <label className="block text-sm font-medium text-gray-700">Başlangıç Zamanı</label>
                         <input 
                             type="datetime-local" 
-                            required
+                            required 
                             className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
                             value={baslangic}
                             onChange={(e) => setBaslangic(e.target.value)}
@@ -78,7 +86,7 @@ const ReservationModal = ({ isOpen, onClose, equipment, user, onSuccess }) => {
                         <label className="block text-sm font-medium text-gray-700">Bitiş Zamanı</label>
                         <input 
                             type="datetime-local" 
-                            required
+                            required 
                             className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
                             value={bitis}
                             onChange={(e) => setBitis(e.target.value)}
@@ -86,19 +94,8 @@ const ReservationModal = ({ isOpen, onClose, equipment, user, onSuccess }) => {
                     </div>
 
                     <div className="flex justify-end space-x-2 mt-4">
-                        <button 
-                            type="button" 
-                            onClick={onClose}
-                            className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"
-                        >
-                            İptal
-                        </button>
-                        <button 
-                            type="submit" 
-                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-bold"
-                        >
-                            Onayla
-                        </button>
+                        <button type="button" onClick={onClose} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">İptal</button>
+                        <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-bold">Onayla</button>
                     </div>
                 </form>
             </div>

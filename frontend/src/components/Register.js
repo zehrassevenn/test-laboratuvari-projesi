@@ -30,9 +30,9 @@ const Register = () => {
         try {
             await axios.post(`${API_URL}/auth/kayit`, formData);
             
-            setMessage({ 
+            setMessage({
                 text: 'Kayıt başarılı! Yöneticinin onaylaması bekleniyor. Giriş sayfasına yönlendiriliyorsunuz...', 
-                type: 'success' 
+                type: 'success'
             });
 
             setTimeout(() => {

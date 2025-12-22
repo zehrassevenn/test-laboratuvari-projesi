@@ -7,10 +7,10 @@ namespace backend.Models
 {
     public class Laboratuvar
     {
-    [Key] // Bu alanın Primary Key (PK) olduğunu belirtir
+    [Key] // Primary Key olduğunu belirtir
     public int LabID { get; set; }
 
-    [Required] // Bu alanın boş geçilemez (NOT NULL) olduğunu belirtir
+    [Required] // boş geçilemez (NOT NULL) olduğunu belirtir
     [StringLength(100)]
     public string LabAdi { get; set; }
 
